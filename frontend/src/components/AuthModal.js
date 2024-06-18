@@ -22,30 +22,33 @@ const AuthModal = ({ isOpen, onClose }) => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
-
+        e.preventDefault();
+        const backendUrl = 'http://localhost:5000';
+    
         try {
             if (isLogin) {
-                // Login request
-                const response = await axios.post('http://localhost:5000/api/user/login', {
+                console.log('Login request:', { email, password });
+                const response = await axios.post(`${backendUrl}/api/user/login`, {
                     email,
                     password
                 });
+                console.log('Login response:', response.data);
                 localStorage.setItem('token', response.data.token);
                 setSuccess('Logged in successfully!');
                 setError('');
                 onClose();
             } else {
-                // Signup request
                 if (password !== passwordConfirm) {
                     setError('Passwords do not match');
                     return;
                 }
-                const response = await axios.post('http://localhost:5000/api/user/signup', {
+                console.log('Signup request:', { username, email, password });
+                const response = await axios.post(`${backendUrl}/api/user/signup`, {
                     username,
                     email,
                     password
                 });
+                console.log('Signup response:', response.data);
                 localStorage.setItem('token', response.data.token);
                 setSuccess('Account created successfully!');
                 setError('');
@@ -61,6 +64,7 @@ const AuthModal = ({ isOpen, onClose }) => {
             console.error(error);  // Log error to console for debugging
         }
     };
+    
 
     return (
         <Modal
@@ -95,7 +99,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                         )}
                         <div className="form-floating mb-3">
                             <input
-                                type={isLogin ? 'text' : 'email'}
+                                type={isLogin ? 'email' : 'text'}
                                 className="form-control"
                                 id="floatingEmail"
                                 placeholder="name@example.com"
@@ -103,7 +107,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
-                            <label htmlFor="floatingEmail">{isLogin ? 'Username' : 'Email address'}</label>
+                            <label htmlFor="floatingEmail">{isLogin ? 'Email' : 'Email address'}</label>
                             <div className="invalid-feedback">
                                 Please enter a valid email address.
                             </div>
