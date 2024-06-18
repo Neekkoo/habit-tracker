@@ -2,9 +2,6 @@
 
 This project is a habit tracker application with user authentication. The project consists of a frontend built with React and a backend built with Node.js and Express, using SQLite as the database.
 
-## Notes
-Ensure both the frontend and backend servers are running simultaneously for the application to work correctly. Run Backend First.
-
 ## How to Run the Frontend
 
 1. Navigate to the frontend directory:
@@ -44,3 +41,5 @@ Use the following test credentials to log in:
 ## Password: password123
 
 
+## Notes
+Ensure both the frontend and backend servers are running simultaneously for the application to work correctly.
