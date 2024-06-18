@@ -1,6 +1,8 @@
-const db = require('../app');  // Import the database connection
+const db = require('../database');  // Import the database connection
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+
+console.log('DB object:', db);  // Add this line to check the db object
 
 exports.signup = (req, res) => {
     const { username, email, password } = req.body;
