@@ -1,25 +1,26 @@
-import logo from './logo.svg';
+// src/App.js
+import React, { useState } from 'react';
+import AuthModal from './components/AuthModal';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [isModalOpen, setIsModalOpen] = useState(true);
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    return (
+        <div className="App">
+            <AuthModal isOpen={isModalOpen} onClose={closeModal} />
+            {!isModalOpen && (
+                <div>
+                    <h1>Welcome to Habit Tracker</h1>
+                    {/* Add other components like AddHabitForm and HabitList here */}
+                </div>
+            )}
+        </div>
+    );
 }
 
 export default App;
