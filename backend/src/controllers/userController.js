@@ -23,15 +23,24 @@ exports.signup = (req, res) => {
 exports.login = (req, res) => {
     const { email, password } = req.body;
 
+    console.log('Login request received:', email, password);  // Debug log
+
     const query = `SELECT * FROM users WHERE email = ?`;
 
     db.get(query, [email], (err, user) => {
-        if (err || !user) {
+        if (err) {
+            console.error('Database error:', err);  // Debug log
+            return res.status(500).json({ message: 'Database error' });
+        }
+
+        if (!user) {
+            console.log('User not found');  // Debug log
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
         const isMatch = bcrypt.compareSync(password, user.password);
         if (!isMatch) {
+            console.log('Password does not match');  // Debug log
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
