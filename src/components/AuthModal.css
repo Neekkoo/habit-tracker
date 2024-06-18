@@ -1,45 +1,69 @@
 /* src/components/AuthModal.css */
-.modal {
-  background: white;
-  padding: 20px;
+.ReactModal__Content {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 500px;
   width: 100%;
+  background: white;
   border-radius: 10px;
+  padding: 0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  outline: none; /* Remove default outline from the modal */
 }
 
-.overlay {
+.ReactModal__Overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.75);
-}
-
-form {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-form > div {
-  margin-bottom: 15px;
+.modal-wrapper {
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-label {
-  margin-bottom: 5px;
+.login-modal .modal-wrapper {
+  background-color: #f0f8ff; /* Light blue background for login */
 }
 
-input {
-  padding: 10px;
-  font-size: 1rem;
+.signup-modal .modal-wrapper {
+  background-color: #faf0e6; /* Light coral background for sign-up */
 }
 
-button {
-  padding: 10px;
-  font-size: 1rem;
-  margin-top: 10px;
+.modal-header,
+.modal-footer {
+  padding: 10px 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #dee2e6;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+/* Remove outline from all inputs, buttons, and modal elements */
+.modal-wrapper input:focus,
+.modal-wrapper button:focus {
+  outline: none;
+  box-shadow: none;
 }

@@ -16,7 +16,6 @@ function App() {
             {!isModalOpen && (
                 <div>
                     <h1>Welcome to Habit Tracker</h1>
-                    {/* Add other components like AddHabitForm and HabitList here */}
                 </div>
             )}
         </div>
