@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 Modal.setAppElement('#root');
 
-const AuthModal = ({ isOpen, onClose }) => {
+const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
     const [isLogin, setIsLogin] = useState(true);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -34,6 +34,8 @@ const AuthModal = ({ isOpen, onClose }) => {
                 });
                 console.log('Login response:', response.data);
                 localStorage.setItem('token', response.data.token);
+                localStorage.setItem('username', response.data.user.username);
+                onAuthSuccess(response.data.user.username); // Update the username in the parent component
                 setSuccess('Logged in successfully!');
                 setError('');
                 onClose();
@@ -50,6 +52,8 @@ const AuthModal = ({ isOpen, onClose }) => {
                 });
                 console.log('Signup response:', response.data);
                 localStorage.setItem('token', response.data.token);
+                localStorage.setItem('username', response.data.user.username);
+                onAuthSuccess(response.data.user.username); // Update the username in the parent component
                 setSuccess('Account created successfully!');
                 setError('');
                 onClose();
@@ -64,7 +68,6 @@ const AuthModal = ({ isOpen, onClose }) => {
             console.error(error);  // Log error to console for debugging
         }
     };
-    
 
     return (
         <Modal

@@ -31,8 +31,8 @@ exports.signup = async (req, res) => {
                     }
 
                     // Generate token
-                    const token = jwt.sign({ id: this.lastID }, 'your_jwt_secret', { expiresIn: '1h' });
-                    res.status(201).json({ token });
+                    const token = jwt.sign({ id: this.lastID, username }, 'your_jwt_secret', { expiresIn: '1h' });
+                    res.status(201).json({ token, user: { id: this.lastID, username } });
                 });
             });
         });
@@ -65,8 +65,8 @@ exports.login = (req, res) => {
                 }
 
                 // Generate token
-                const token = jwt.sign({ id: user.id }, 'your_jwt_secret', { expiresIn: '1h' });
-                res.status(200).json({ token });
+                const token = jwt.sign({ id: user.id, username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
+                res.status(200).json({ token, user: { id: user.id, username: user.username } });
             });
         });
     } catch (error) {
