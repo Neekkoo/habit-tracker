@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AuthModal from './components/AuthModal';
+import Header from './components/Header';
+import LandingPage from './components/LandingPage';
+import Profile from './components/Profile';
 import './App.css';
 
 function App() {
     const [isModalOpen, setIsModalOpen] = useState(true);
     const [username, setUsername] = useState('');
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
 
     const handleAuthSuccess = (username) => {
         setUsername(username);
@@ -27,17 +35,18 @@ function App() {
     }, []);
 
     return (
-        <div className="App">
-            {isModalOpen ? (
-                <AuthModal isOpen={isModalOpen} onAuthSuccess={handleAuthSuccess} />
-            ) : (
-                <div>
-                    <h1>Welcome to Habit Tracker</h1>
-                    <h2>Welcome back, {username}!</h2>
-                    <button onClick={handleLogout}>Logout</button>
-                </div>
-            )}
-        </div>
+        <Router>
+            <div className="App">
+                <Header username={username} onLogout={handleLogout} />
+                <AuthModal isOpen={isModalOpen} onClose={closeModal} onAuthSuccess={handleAuthSuccess} />
+                {!isModalOpen && (
+                    <Routes>
+                        <Route path="/" element={<LandingPage username={username} />} />
+                        <Route path="/profile" element={<Profile username={username} />} />
+                    </Routes>
+                )}
+            </div>
+        </Router>
     );
 }
 

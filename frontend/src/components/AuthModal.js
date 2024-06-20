@@ -27,16 +27,13 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
     
         try {
             if (isLogin) {
-                console.log('Login request:', { email, password });
                 const response = await axios.post(`${backendUrl}/api/user/login`, {
-                    email,
+                    username, // Use username instead of email
                     password
                 });
-                console.log('Login response:', response.data);
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', response.data.user.username);
-                onAuthSuccess(response.data.user.username); // Update the username in the parent component
-                setSuccess('Logged in successfully!');
+                onAuthSuccess(response.data.user.username);
                 setError('');
                 onClose();
             } else {
@@ -44,16 +41,14 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
                     setError('Passwords do not match');
                     return;
                 }
-                console.log('Signup request:', { username, email, password });
                 const response = await axios.post(`${backendUrl}/api/user/signup`, {
                     username,
                     email,
                     password
                 });
-                console.log('Signup response:', response.data);
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', response.data.user.username);
-                onAuthSuccess(response.data.user.username); // Update the username in the parent component
+                onAuthSuccess(response.data.user.username);
                 setSuccess('Account created successfully!');
                 setError('');
                 onClose();
@@ -65,9 +60,10 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
                 setError('An error occurred. Please try again.');
             }
             setSuccess('');
-            console.error(error);  // Log error to console for debugging
+            console.error(error);
         }
     };
+    
 
     return (
         <Modal
@@ -75,7 +71,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
             onRequestClose={onClose}
             className={`ReactModal__Content ${isLogin ? 'login-modal' : 'signup-modal'}`}
             overlayClassName="ReactModal__Overlay"
-            shouldCloseOnOverlayClick={false} // Prevent closing on overlay click
+            shouldCloseOnOverlayClick={false}
         >
             <div className="modal-wrapper">
                 <div className="modal-header">
@@ -83,38 +79,38 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
                 </div>
                 <div className="modal-body">
                     <form className="needs-validation" noValidate onSubmit={handleSubmit}>
+                        <div className="form-floating mb-3">
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="floatingUsername"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                            <label htmlFor="floatingUsername">Username</label>
+                            <div className="invalid-feedback">
+                                Please enter your username.
+                            </div>
+                        </div>
                         {!isLogin && (
                             <div className="form-floating mb-3">
                                 <input
-                                    type="text"
+                                    type="email"
                                     className="form-control"
-                                    id="floatingUsername"
-                                    placeholder="Username"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
+                                    id="floatingEmail"
+                                    placeholder="name@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                 />
-                                <label htmlFor="floatingUsername">Username</label>
+                                <label htmlFor="floatingEmail">Email address</label>
                                 <div className="invalid-feedback">
-                                    Please enter your username.
+                                    Please enter a valid email address.
                                 </div>
                             </div>
                         )}
-                        <div className="form-floating mb-3">
-                            <input
-                                type={isLogin ? 'email' : 'text'}
-                                className="form-control"
-                                id="floatingEmail"
-                                placeholder="name@example.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                            <label htmlFor="floatingEmail">{isLogin ? 'Email' : 'Email address'}</label>
-                            <div className="invalid-feedback">
-                                Please enter a valid email address.
-                            </div>
-                        </div>
                         <div className="form-floating mb-3">
                             <input
                                 type="password"

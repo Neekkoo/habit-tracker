@@ -8,8 +8,8 @@ exports.signup = async (req, res) => {
 
     try {
         // Check if user already exists
-        const userExistsQuery = 'SELECT * FROM users WHERE email = ?';
-        db.get(userExistsQuery, [email], (err, row) => {
+        const userExistsQuery = 'SELECT * FROM users WHERE username = ? OR email = ?';
+        db.get(userExistsQuery, [username, email], (err, row) => {
             if (err) {
                 return res.status(500).json({ message: 'Database error' });
             }
@@ -43,11 +43,11 @@ exports.signup = async (req, res) => {
 
 // Login
 exports.login = (req, res) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     try {
-        const userQuery = 'SELECT * FROM users WHERE email = ?';
-        db.get(userQuery, [email], (err, user) => {
+        const userQuery = 'SELECT * FROM users WHERE username = ?';
+        db.get(userQuery, [username], (err, user) => {
             if (err) {
                 return res.status(500).json({ message: 'Database error' });
             }
@@ -68,6 +68,24 @@ exports.login = (req, res) => {
                 const token = jwt.sign({ id: user.id, username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
                 res.status(200).json({ token, user: { id: user.id, username: user.username } });
             });
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+// Update User
+exports.updateUser = (req, res) => {
+    const { username } = req.body;
+    const userId = req.user.id;
+
+    try {
+        const updateUserQuery = 'UPDATE users SET username = ? WHERE id = ?';
+        db.run(updateUserQuery, [username, userId], function (err) {
+            if (err) {
+                return res.status(500).json({ message: 'Database error' });
+            }
+            res.status(200).json({ message: 'User updated successfully' });
         });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
