@@ -6,13 +6,16 @@ function App() {
     const [isModalOpen, setIsModalOpen] = useState(true);
     const [username, setUsername] = useState('');
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
     const handleAuthSuccess = (username) => {
         setUsername(username);
         setIsModalOpen(false);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        setUsername('');
+        setIsModalOpen(true);
     };
 
     useEffect(() => {
@@ -25,11 +28,13 @@ function App() {
 
     return (
         <div className="App">
-            <AuthModal isOpen={isModalOpen} onClose={closeModal} onAuthSuccess={handleAuthSuccess} />
-            {!isModalOpen && (
+            {isModalOpen ? (
+                <AuthModal isOpen={isModalOpen} onAuthSuccess={handleAuthSuccess} />
+            ) : (
                 <div>
                     <h1>Welcome to Habit Tracker</h1>
                     <h2>Welcome back, {username}!</h2>
+                    <button onClick={handleLogout}>Logout</button>
                 </div>
             )}
         </div>
